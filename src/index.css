@@ -2,6 +2,9 @@
 
 @theme {
   --font-avenir: 'Montserrat', 'sans-serif';
-  --font-display--font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-  --font-display--font-variation-settings: 'opsz' 32;
+  --font-big-calson: 'Libre Caslon Text', 'sans-serif';
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
 }
