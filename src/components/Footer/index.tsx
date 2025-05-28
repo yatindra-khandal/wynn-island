@@ -4,8 +4,8 @@ import FooterSection from './FooterSection';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#5A3A27] py-10 px-6 md:px-20 xl:px-40 flex flex-col gap-8 text-white text-[11px] tracking-tight">
-      <div className="flex flex-wrap justify-between w-full gap-1">
+    <footer className="bg-[#5A3A27] py-10 px-4 sm:px-10 md:px-20 xl:px-32 2xl:px-40 flex flex-col gap-6 sm:gap-8 text-white text-[11px] tracking-tight">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full">
         <FooterSection ariaLabel="Shop links" links={FOOTER_LINKS.SHOP_LINKS} />
         <FooterSection ariaLabel="Corporate links" links={FOOTER_LINKS.CORPORATE_LINKS} />
         <FooterSection ariaLabel="Destinations" links={FOOTER_LINKS.DESTINATIONS} />
@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="leading-6 tracking-[1px]">Connect with us.</h3>
             <nav aria-label="Social media">
-              <ul className="flex gap-8 py-1.5">
+              <ul className="flex flex-wrap gap-x-6 gap-y-4 py-1.5">
                 {FOOTER_LINKS.SOCIAL_LINKS.map((link) => (
                   <SocialIcon
                     key={link.id}
@@ -43,7 +43,7 @@ const Footer: React.FC = () => {
       >
         <p className="text-xs">Do Not Sell Or Share My Data</p>
         <small className="text-xs md:text-[11px]">
-          &copy; 2024 Wynn Resorts Holdings, LLC. All rights reserved.
+          &copy; {new Date().getFullYear()} Wynn Resorts Holdings, LLC. All rights reserved.
         </small>
       </section>
     </footer>
