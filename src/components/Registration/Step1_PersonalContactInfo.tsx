@@ -6,6 +6,7 @@ import CheckboxInput from '../ui/CheckBoxInput';
 import { registrationSchema } from './validationSchema';
 import PhoneInput from '../ui/PhoneInput';
 import Button from '../ui/Button';
+import SectionTitle from '../ui/SectionTitle';
 
 const Step1_PersonalContactInfo = () => {
   const { state, dispatch } = useRegistration();
@@ -59,10 +60,7 @@ const Step1_PersonalContactInfo = () => {
   return (
     <form onSubmit={handleNext}>
       <div className="flex flex-col gap-5 pb-8">
-        <div className="relative mb-4">
-          <h3 className="font-big-calson text-[22px] text-[#1D1F22]">Personal Info</h3>
-          <div className="absolute bottom-[-8px] left-0 w-[164px] h-[1px] bg-[#1D1F22]" />
-        </div>
+        <SectionTitle title="Personal Info" />
         <div className="grid grid-cols-1 gap-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <TextInput
@@ -120,10 +118,7 @@ const Step1_PersonalContactInfo = () => {
       </div>
 
       <div className="flex flex-col gap-5 pb-8">
-        <div className="relative mb-4">
-          <h3 className="font-big-calson text-[22px] text-[#1D1F22]">Contact Details</h3>
-          <div className="absolute bottom-[-8px] left-0 w-[164px] h-[1px] bg-[#1D1F22]" />
-        </div>
+        <SectionTitle title="Contact Details" />
         <div className="grid grid-cols-1 gap-6">
           <div className="col-span-full">
             <TextInput

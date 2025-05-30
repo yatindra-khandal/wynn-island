@@ -1,15 +1,19 @@
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary';
   label: string;
   className?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({ className = '', variant, label, ...props }) => {
+const Button: React.FC<ButtonProps> = ({
+  className = '',
+  variant = 'secondary',
+  label,
+  ...props
+}) => {
   return (
     <button
       {...props}
-      className={`${className} ${variant === 'primary' ? 'bg-[#006F62]' : ''}
-                px-8 py-4 rounded text-white `}
+      className={`${className} px-8 py-4 rounded border-[#006F62] border uppercase tracking-wider ${variant === 'primary' ? 'bg-[#006F62] text-white' : 'text-[#006F62]'}`}
     >
       {label}
     </button>
