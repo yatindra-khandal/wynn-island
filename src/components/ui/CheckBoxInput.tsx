@@ -1,5 +1,5 @@
 type CheckboxInputProps = {
-  label: string;
+  label: string | React.ReactNode;
   name: string;
   checked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
