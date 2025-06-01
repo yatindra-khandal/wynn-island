@@ -1,30 +1,22 @@
-import { useState } from 'react';
 import { useRegistration } from '../../hooks/useRegistration';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
 import RadioGroup from '../ui/RadioGroup';
 import SectionTitle from '../ui/SectionTitle';
-
-type OtpMethod = 'mobile' | 'email';
-
-const SEND_CODE_MODE = [
-  {
-    label: 'Send to Phone',
-    value: 'mobile',
-  },
-  { label: 'Send to Email', value: 'email' },
-];
+import type { OtpMethod } from '../../context/RegistrationContext/reducer';
+import { SEND_CODE_MODE } from '../../constants/registration-form';
 
 const Step2_OtpVerification = () => {
-  const { dispatch } = useRegistration();
-  const [selectedMethod, setSelectedMethod] = useState<OtpMethod | null>(null);
+  const { state, dispatch } = useRegistration();
 
-  const handleBack = () => {
-    dispatch({ type: 'PREV_STEP' });
+  const handleBack = () => dispatch({ type: 'PREV_STEP' });
+
+  const handleOTPMethodChange = (method: OtpMethod) => {
+    dispatch({ type: 'UPDATE_OTP_SELECTED_METHOD', payload: method });
   };
 
   const handleSubmit = () => {
-    if (selectedMethod) {
+    if (state.selectedMethod) {
       dispatch({ type: 'NEXT_STEP' });
     }
   };
@@ -40,14 +32,14 @@ const Step2_OtpVerification = () => {
         <RadioGroup
           className="py-5"
           name="otpMethod"
-          value={selectedMethod || ''}
-          onChange={(e) => setSelectedMethod(e.target.value as OtpMethod)}
+          value={state.selectedMethod}
+          onChange={handleOTPMethodChange}
           options={SEND_CODE_MODE}
         />
       </Card>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
-        <Button onClick={handleBack} variant={'primary'} label="Back" />
-        <Button variant="primary" onClick={handleSubmit} label="Next" />
+      <div className="flex justify-between gap-5 mt-5">
+        <Button onClick={handleBack} label="Back" className="w-[295px]" />
+        <Button variant="primary" onClick={handleSubmit} label="Next" className="w-[295px]" />
       </div>
     </div>
   );

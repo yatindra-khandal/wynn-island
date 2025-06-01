@@ -1,4 +1,3 @@
-import React from 'react';
 import RadioInput from './RadioInput';
 
 interface RadioGroupProps {
@@ -18,7 +17,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({ name, options, value, onChange,
           name={name}
           value={optionValue}
           checked={value === optionValue}
-          onChange={() => onChange(optionValue)}
+          onChange={onChange}
           label={label}
         />
       ))}

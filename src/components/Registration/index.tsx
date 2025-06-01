@@ -16,9 +16,9 @@ const Registration = () => {
           </div>
           <p>Please enter below information to create your account.</p>
         </div>
-        {state.step === 2 && <Step1_PersonalContactInfo />}
-        {state.step === 3 && <Step2_OtpVerification />}
-        {state.step === 1 && <Step3_Success />}
+        {state.step === 1 && <Step1_PersonalContactInfo />}
+        {state.step === 2 && <Step2_OtpVerification />}
+        {state.step === 3 && <Step3_Success />}
       </div>
     </main>
   );

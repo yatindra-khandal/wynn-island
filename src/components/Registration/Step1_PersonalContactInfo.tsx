@@ -59,8 +59,8 @@ const Step1_PersonalContactInfo = () => {
 
   return (
     <form onSubmit={handleNext}>
-      <div className="flex flex-col gap-5 pb-8">
-        <SectionTitle title="Personal Info" />
+      <SectionTitle title="Personal Info" />
+      <div className="flex flex-col gap-5 pb-8 pt-5">
         <div className="grid grid-cols-1 gap-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <TextInput
@@ -117,8 +117,8 @@ const Step1_PersonalContactInfo = () => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-5 pb-8">
-        <SectionTitle title="Contact Details" />
+      <SectionTitle title="Contact Details" />
+      <div className="flex flex-col gap-5 pb-8 pt-5">
         <div className="grid grid-cols-1 gap-6">
           <div className="col-span-full">
             <TextInput

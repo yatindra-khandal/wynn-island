@@ -4,12 +4,13 @@ import LanguageSelector from './LanguageSelector';
 type NavLinksProps = {
   className?: string;
   ref: React.Ref<HTMLDivElement>;
-  onMenuSelect: () => void;
+  onMenuSelect?: () => void;
 };
 
 const NavLinks: React.FC<NavLinksProps> = ({ className = '', ref, onMenuSelect }) => {
   return (
     <nav
+      data-testid="primary-navigation"
       id="primary-navigation"
       ref={ref}
       className={`${className} 

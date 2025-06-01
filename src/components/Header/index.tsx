@@ -55,19 +55,13 @@ const Header = () => {
           <span className="sr-only">Toggle menu</span>
           {isMenuOpen ? <Hamburger /> : <CloseIcon />}
         </button>
-        <NavLinks
-          className="hidden md:flex"
-          ref={navRef}
-          onMenuSelect={() => setIsMenuOpen(false)}
-        />
+        <NavLinks ref={navRef} className="hidden md:flex" />
         <LanguageSelector containerClass="hidden sm:block" />
       </div>
       <NavLinks
-        className={`
-           md:hidden ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}
-          `}
         ref={navRef}
         onMenuSelect={() => setIsMenuOpen(false)}
+        className={`md:hidden ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}
       />
     </header>
   );

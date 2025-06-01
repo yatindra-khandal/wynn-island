@@ -1,5 +1,5 @@
 import FOOTER_LINKS from '../../constants/footer-links';
-import SocialIcon from '../SocialIcon';
+import SocialIcon from '../ui/SocialIcon';
 import FooterSection from './FooterSection';
 
 const Footer: React.FC = () => {

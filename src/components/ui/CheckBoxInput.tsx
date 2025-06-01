@@ -7,7 +7,7 @@ type CheckboxInputProps = {
   tooltip?: string;
 };
 
-const CheckboxInput = ({ label, name, checked, onChange, error, tooltip }: CheckboxInputProps) => {
+const CheckBoxInput = ({ label, name, checked, onChange, error, tooltip }: CheckboxInputProps) => {
   return (
     <div className="flex flex-col">
       <div className="flex items-center">
@@ -34,4 +34,4 @@ const CheckboxInput = ({ label, name, checked, onChange, error, tooltip }: Check
   );
 };
 
-export default CheckboxInput;
+export default CheckBoxInput;

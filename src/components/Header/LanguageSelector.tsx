@@ -6,7 +6,7 @@ type LanguageSelectorProps = {
 
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({ containerClass = '' }) => {
   return (
-    <div className={`relative group ${containerClass}`}>
+    <div data-testid="language-selector" className={`relative group ${containerClass}`}>
       <label htmlFor="language" className="sr-only">
         Select Language
       </label>
