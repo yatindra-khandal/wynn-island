@@ -1,7 +1,7 @@
 import { useRegistration } from '../../hooks/useRegistration';
 import Step1_PersonalContactInfo from './Step1_PersonalContactInfo';
-import Step2_OtpVerification from './Step2_OtpVerification';
-import Step3_Success from './Step3_Success';
+import Step2_OtpForwardOption from './Step2_OtpForwardOption';
+import Step3_OtpVerification from './Step3_OtpVerification';
 
 const Registration = () => {
   const { state } = useRegistration();
@@ -17,8 +17,8 @@ const Registration = () => {
           <p>Please enter below information to create your account.</p>
         </div>
         {state.step === 1 && <Step1_PersonalContactInfo />}
-        {state.step === 2 && <Step2_OtpVerification />}
-        {state.step === 3 && <Step3_Success />}
+        {state.step === 2 && <Step2_OtpForwardOption />}
+        {state.step === 3 && <Step3_OtpVerification />}
       </div>
     </main>
   );

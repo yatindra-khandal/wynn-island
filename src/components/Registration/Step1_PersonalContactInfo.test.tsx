@@ -1,7 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Step1_PersonalContactInfo from './Step1_PersonalContactInfo';
 import { RegistrationContext } from '../../context/RegistrationContext';
+import { submitRegistration } from '../../services/registrationService';
 
+vi.mock('../../services/registrationService', () => ({
+  submitRegistration: vi.fn(),
+}));
 vi.mock('../ui/PhoneInput', () => ({
   default: ({ label, name, value, onChange, error, tooltip }: any) => (
     <div>
@@ -113,7 +117,8 @@ describe('Step1_PersonalContactInfo', () => {
     });
   });
 
-  it('dispatches NEXT_STEP when form is completely valid', () => {
+  it('displays loading state while submitting', async () => {
+    (submitRegistration as vi.Mock).mockImplementation(() => new Promise(() => {}));
     renderWithContext({
       firstName: 'Alice',
       lastName: 'Smith',
@@ -125,6 +130,40 @@ describe('Step1_PersonalContactInfo', () => {
     });
 
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
+    expect(screen.getByRole('button', { name: /loading/i })).toBeDisabled();
+  });
+
+  it('dispatches NEXT_STEP when form is completely valid', async () => {
+    (submitRegistration as vi.Mock).mockResolvedValue({ success: true });
+    renderWithContext({
+      firstName: 'Alice',
+      lastName: 'Smith',
+      gender: 'female',
+      country: 'us',
+      email: 'alice@example.com',
+      phone: '+123456789',
+      termsAccepted: true,
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+    expect(await screen.findByRole('button', { name: /next/i })).toBeInTheDocument();
     expect(mockDispatch).toHaveBeenCalledWith({ type: 'NEXT_STEP' });
+  });
+
+  it('displays API error when registration fails', async () => {
+    (submitRegistration as vi.Mock).mockResolvedValue({ success: false, error: 'Server error' });
+    renderWithContext({
+      firstName: 'Alice',
+      lastName: 'Smith',
+      gender: 'female',
+      country: 'us',
+      email: 'alice@example.com',
+      phone: '+123456789',
+      termsAccepted: true,
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+    expect(await screen.findByText(/server error/i)).toBeInTheDocument();
+    expect(mockDispatch).not.toHaveBeenCalledWith({ type: 'NEXT_STEP' });
   });
 });

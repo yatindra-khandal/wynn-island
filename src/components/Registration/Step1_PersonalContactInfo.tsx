@@ -7,11 +7,14 @@ import { registrationSchema } from './validationSchema';
 import PhoneInput from '../ui/PhoneInput';
 import Button from '../ui/Button';
 import SectionTitle from '../ui/SectionTitle';
+import { submitRegistration } from '../../services/registrationService';
 
 const Step1_PersonalContactInfo = () => {
   const { state, dispatch } = useRegistration();
   const { form } = state;
   const [errors, setErrors] = useState<Partial<Record<keyof typeof form, string[]>>>({});
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const target = e.target;
@@ -43,18 +46,29 @@ const Step1_PersonalContactInfo = () => {
     }));
   };
 
-  const handleNext = (e: React.FormEvent) => {
+  const handleNext = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     const result = registrationSchema.safeParse(form);
 
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors;
       setErrors(fieldErrors);
+      setLoading(false);
+      return;
+    }
+
+    const response = await submitRegistration(form);
+
+    if (!response.success) {
+      setApiError(response.error ?? 'Registration failed.');
+      setLoading(false);
       return;
     }
 
     dispatch({ type: 'NEXT_STEP' });
+    setLoading(false);
   };
 
   return (
@@ -166,11 +180,15 @@ const Step1_PersonalContactInfo = () => {
         tooltip="You must accept the terms and conditions to proceed"
       />
 
+      {apiError && <p className="text-sm text-red-600 mt-4">{apiError}</p>}
+
       <Button
         variant="primary"
-        label="NEXT"
+        label={loading ? 'Loading...' : 'NEXT'}
         className="w-[217px] mt-10 cursor-pointer"
         type="submit"
+        disabled={loading}
+        aria-busy={loading}
       />
     </form>
   );

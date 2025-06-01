@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { useRegistration } from '../../hooks/useRegistration';
+import { requestOtp } from '../../services/registrationService';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
 import RadioGroup from '../ui/RadioGroup';
@@ -6,8 +8,10 @@ import SectionTitle from '../ui/SectionTitle';
 import type { OtpMethod } from '../../context/RegistrationContext/reducer';
 import { SEND_CODE_MODE } from '../../constants/registration-form';
 
-const Step2_OtpVerification = () => {
+const Step2_OtpForwardOption = () => {
   const { state, dispatch } = useRegistration();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleBack = () => dispatch({ type: 'PREV_STEP' });
 
@@ -15,10 +19,25 @@ const Step2_OtpVerification = () => {
     dispatch({ type: 'UPDATE_OTP_SELECTED_METHOD', payload: method });
   };
 
-  const handleSubmit = () => {
-    if (state.selectedMethod) {
-      dispatch({ type: 'NEXT_STEP' });
+  const handleSubmit = async () => {
+    if (!state.selectedMethod) return;
+
+    setLoading(true);
+    setError(null);
+
+    const res = await requestOtp({
+      email: state.form.email,
+      phone: state.form.phone,
+    });
+
+    setLoading(false);
+
+    if (!res.success) {
+      setError(res.error ?? 'Failed to send OTP');
+      return;
     }
+
+    dispatch({ type: 'NEXT_STEP' });
   };
 
   return (
@@ -39,10 +58,17 @@ const Step2_OtpVerification = () => {
       </Card>
       <div className="flex justify-between gap-5 mt-5">
         <Button onClick={handleBack} label="Back" className="w-[295px]" />
-        <Button variant="primary" onClick={handleSubmit} label="Next" className="w-[295px]" />
+        <Button
+          variant="primary"
+          onClick={handleSubmit}
+          label={loading ? 'Loading...' : 'Next'}
+          className="w-[295px]"
+          disabled={loading}
+        />
       </div>
+      {error && <p className="text-red-600 text-sm mt-4 text-center">{error}</p>}
     </div>
   );
 };
 
-export default Step2_OtpVerification;
+export default Step2_OtpForwardOption;

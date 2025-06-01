@@ -1,9 +1,14 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import Step3_Success from './Step3_Success';
+import Step3_OtpVerification from './Step3_OtpVerification';
 import { RegistrationContext } from '../../context/RegistrationContext';
+import { requestOtp, verifyOtp } from '../../services/registrationService';
 
 const mockDispatch = vi.fn();
+vi.mock('../../services/registrationService', () => ({
+  verifyOtp: vi.fn(),
+  requestOtp: vi.fn(),
+}));
 
 const renderWithContext = (form = {}, selectedMethod = 'email') => {
   return render(
@@ -20,12 +25,12 @@ const renderWithContext = (form = {}, selectedMethod = 'email') => {
         dispatch: mockDispatch,
       }}
     >
-      <Step3_Success />
+      <Step3_OtpVerification />
     </RegistrationContext.Provider>
   );
 };
 
-describe('Step3_Success', () => {
+describe('Step3_OtpVerification', () => {
   beforeEach(() => {
     mockDispatch.mockClear();
   });
@@ -46,15 +51,12 @@ describe('Step3_Success', () => {
     expect(screen.getByText(/\+123456789/i)).toBeInTheDocument();
   });
 
-  it('triggers alert with OTP value on submit', () => {
-    const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
+  it('calls verifyOtp on submit', async () => {
+    (verifyOtp as vi.Mock).mockResolvedValue({ success: true });
     renderWithContext();
     const submitBtn = screen.getByRole('button', { name: /submit/i });
-
     fireEvent.click(submitBtn);
-
-    expect(alertMock).toHaveBeenCalledWith('Submitting OTP: ');
-    alertMock.mockRestore();
+    expect(verifyOtp).toHaveBeenCalled();
   });
 
   it('triggers PREV_STEP dispatch on Back click', () => {
@@ -64,12 +66,36 @@ describe('Step3_Success', () => {
     expect(mockDispatch).toHaveBeenCalledWith({ type: 'PREV_STEP' });
   });
 
-  it('triggers alert on resend OTP click', () => {
-    const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
+  it('triggers requestOtp on resend OTP click', () => {
+    (requestOtp as vi.Mock).mockResolvedValue({ success: true });
+
     renderWithContext();
     const resend = screen.getByText(/Click to resend/i);
     fireEvent.click(resend);
-    expect(alertMock).toHaveBeenCalledWith('Resend OTP');
-    alertMock.mockRestore();
+    expect(requestOtp).toHaveBeenCalled();
+  });
+
+  it('shows success message after submitting valid OTP', async () => {
+    renderWithContext();
+    const submitBtn = screen.getByRole('button', { name: /submit/i });
+    fireEvent.click(submitBtn);
+    expect(await screen.findByText(/You're all set!/i)).toBeInTheDocument();
+  });
+
+  it('shows loading state when submitting', async () => {
+    renderWithContext();
+    const submitBtn = screen.getByRole('button', { name: /submit/i });
+    fireEvent.click(submitBtn);
+    expect(submitBtn).toHaveTextContent(/Submitting/i);
+  });
+
+  it('displays error message on failed OTP verification', async () => {
+    (verifyOtp as vi.Mock).mockRejectedValueOnce(new Error('Invalid OTP'));
+
+    renderWithContext();
+    const submitBtn = screen.getByRole('button', { name: /submit/i });
+    fireEvent.click(submitBtn);
+
+    expect(await screen.findByText(/Invalid or expired OTP/i)).toBeInTheDocument();
   });
 });

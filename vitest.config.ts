@@ -9,7 +9,7 @@ export default defineConfig({
     coverage: {
       provider: 'istanbul',
       reporter: ['text', 'json', 'html'],
-      exclude: ['src/main.tsx', 'src/assets/**', '**/node_modules/**', '**/tests/**'],
+      exclude: ['src/main.tsx', 'src/assets/**', '**/node_modules/**', '**/tests/**', 'server.js'],
     },
     setupFiles: './src/setupTests.ts',
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
