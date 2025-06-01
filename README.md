@@ -32,6 +32,44 @@ src/
 - **Separation of Concerns:** Logic, presentation, and context are decoupled for better maintainability.
 - **DX-Driven:** Uses Tailwind, TypeScript, Vitest and Vite to optimize developer feedback loop and build performance.
 
+### 💡 Service Layer
+
+The app uses a decoupled `services/` folder that abstracts API interaction using a generic fetch-based client (`comms.ts`). It allows consistent request handling, centralized error management, and secure integration of access tokens via cookies or headers.
+
+- `comms.ts`: Base HTTP client using Fetch (can be swapped with Axios).
+- `registrationService.ts`: Specific endpoints for registration, OTP, and verification.
+
+This separation makes the codebase more maintainable, testable, and future-proof.
+
+### 🧪 Mock API Server
+
+A simple Node.js Express server (`server.js`) is provided to simulate backend endpoints like:
+
+- `/register`
+- `/request-otp`
+- `/verify-otp`
+- `/resend-verification-email`
+
+You can run it with:
+
+```bash
+node server.js
+```
+
+Then set the base URL in `.env`:
+
+```
+VITE_API_BASE_URL=http://localhost:4000
+```
+
+### ✅ Service Layer Testing
+
+All service functions are unit tested independently from UI, ensuring:
+
+- Correct payloads are sent
+- Success/failure responses are handled
+- Coverage of all edge cases
+
 ## 🚀 Useful Commands
 
 ### Install dependencies
@@ -44,6 +82,12 @@ pnpm install
 
 ```bash
 pnpm dev
+```
+
+### Start mock API server
+
+```bash
+node server.js
 ```
 
 ### Run unit tests
